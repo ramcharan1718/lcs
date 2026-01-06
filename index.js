@@ -25,8 +25,22 @@ function longestCommonSubstring(s1, s2) {
   return s1.substring(endIndex - maxLen, endIndex)
 }
 
+
 app.get('/', (req, res) => {
-  res.send('Longest Common Substring API is running')
+  const { string1, string2 } = req.query
+
+  if (!string1 || !string2) {
+    return res.json({
+      message: 'Please provide string1 and string2 as query parameters'
+    })
+  }
+
+  const result = longestCommonSubstring(string1, string2)
+
+  res.json({
+    longestCommonSubstring: result,
+    length: result.length
+  })
 })
 
 app.post('/lcs', (req, res) => {
@@ -46,6 +60,7 @@ app.post('/lcs', (req, res) => {
   })
 })
 
-app.listen(3000, () => {
-  console.log('Server running on http://localhost:3000')
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
 })
